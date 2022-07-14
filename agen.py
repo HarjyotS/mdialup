@@ -8,8 +8,7 @@ from pygame import mixer
 size = (1366, 720)
 
 bits = 16
-# the number of channels specified here is NOT
-# the channels talked about here http://www.pygame.org/docs/ref/mixer.html#pygame.mixer.get_num_channels
+
 
 pygame.mixer.pre_init(44100, -bits, 2)
 mixer.init(
@@ -19,7 +18,7 @@ pygame.init()
 
 
 duration = 1.0  # in seconds
-# freqency for the left speaker
+
 frequency_l = 800
 
 
@@ -53,17 +52,10 @@ def pque(n):
 
 car = []
 for i in range(0, 256):
-    car.append((i * 5) + 400)
+    car.append((i * 10) + 400)
 
 
 pque(car)
-# This will keep the sound playing forever, the quit event handling allows the pygame window to close without crashing
-_running = True
-# while _running:
-
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             _running = False
-#             break
 
 pygame.quit()
+#

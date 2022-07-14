@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
-RATE = 64000
+RATE = 16400
 CHUNK = 1024  # 1024
 
 all_pitches = []
@@ -14,6 +14,10 @@ all_pitches = []
 stream_buffer = []
 
 p = pyaudio.PyAudio()
+
+
+def myround(x, base=5):
+    return base * round(x / base)
 
 
 def empty_frame(length):
@@ -93,7 +97,7 @@ def detect_pitch(int_data):
         cheq_freq = RATE / av_dip
         detect_pitch.avg = detect_pitch.avg * 0.5 + cheq_freq * 0.5
         all_pitches.append(int(detect_pitch.avg))
-        print("\r" + str(int(detect_pitch.avg)) + " Hz        ", end="")
+        print("\r" + str(myround(int(detect_pitch.avg))) + " Hz        ", end="")
 
 
 if __name__ == "__main__":
@@ -101,26 +105,27 @@ if __name__ == "__main__":
         format=FORMAT,
         channels=CHANNELS,
         rate=RATE,
+        input_device_index=5,
         input=True,
         stream_callback=callback_in,
     )
-    stream_out = p.open(
-        format=FORMAT,
-        channels=CHANNELS,
-        rate=RATE,
-        output=True,
-        stream_callback=callback_out,
-    )
+    # stream_out = p.open(
+    #     format=FORMAT,
+    #     channels=CHANNELS,
+    #     rate=RATE,
+    #     output=True,
+    #     stream_callback=callback_out,
+    # )
 
     stream_in.start_stream()
-    stream_out.start_stream()
+    # stream_out.start_stream()
 
     txt = input()  # stream until enter key press
 
     stream_in.stop_stream()
     stream_in.close()
-    stream_out.stop_stream()
-    stream_out.close()
+    # stream_out.stop_stream()
+    # stream_out.close()
 
     p.terminate()
 
